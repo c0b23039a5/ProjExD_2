@@ -59,6 +59,29 @@ def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
 
     return (bb_accs,accs)
 
+def get_kk_img(sum_mv:tuple[int,int])-> pg.Surface:
+    tmp_angle=[0,False,False]
+    if sum_mv[0] > 0:
+        tmp_angle=[0,1,0]
+    if sum_mv[0] < 0:
+        tmp_angle=[0,0,0]
+    if sum_mv[1] > 0:
+        tmp_angle=[90,0,0]
+    if sum_mv[1] < 0:
+        tmp_angle=[-90,0,0]
+
+    if sum_mv[0] < 0 and sum_mv[1] > 0:
+        tmp_angle=[45,0,0]
+    if sum_mv[0] > 0 and sum_mv[1] > 0:
+        tmp_angle=[45,1,0]
+    if sum_mv[0] < 0 and sum_mv[1] < 0:
+        tmp_angle=[-45,0,0]
+    if sum_mv[0] > 0 and sum_mv[1] < 0:
+        tmp_angle=[-45,1,0]
+    kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), tmp_angle[0], 0.9)
+    kk_img = pg.transform.flip(kk_img, tmp_angle[1], tmp_angle[2])
+    return kk_img
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     tmr = 0
@@ -83,8 +106,8 @@ def main():
 
         bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
 
-        # if kk_rct.colliderect(bb_rct):
-        gameover(screen)  # ゲームオーバー
+        if kk_rct.colliderect(bb_rct):
+          gameover(screen)  # ゲームオーバー
         screen.blit(bg_img, [0, 0])
 
         key_lst = pg.key.get_pressed()
@@ -99,6 +122,10 @@ def main():
         # こうかとんが画面外なら、元の場所に戻す
         if check_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
+
+        kk_img = get_kk_img((0,0))
+        kk_img=get_kk_img(tuple(sum_mv))
+
         screen.blit(kk_img, kk_rct)
 
 
