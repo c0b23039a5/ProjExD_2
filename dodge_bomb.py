@@ -150,7 +150,6 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-        kk_img = get_kk_img((0, 0))
         kk_img = get_kk_img(tuple(sum_mv))
 
         screen.blit(kk_img, kk_rct)
