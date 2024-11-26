@@ -30,16 +30,26 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 
 
 def gameover(screen: pg.Surface) ->None:
+    """
+    ゲームオーバー時に，半透明の黒い画面上に「Game Over」と表示し，泣いているこうかとん画像を貼り付ける関数
+    引数:screen
+    戻り値:なし
+    """
     bg_img = pg.Surface((WIDTH, HEIGHT))
-    pg.draw.rect(bg_img,0,WIDTH, HEIGHT)
+    pg.draw.rect(bg_img,0,pg.Rect(0,0,WIDTH, HEIGHT))
     bg_rct = bg_img.get_rect()
     go_img = pg.image.load("fig/8.png")
     go_rct = go_img.get_rect()
     font = pg.font.Font(None,80)
     txt = font.render("Game Over",True,(255,255,255))
-    screen.blit(bg_rct,[0,0])
+    screen.blit(bg_img,[0,0])
     screen.blit(txt,[WIDTH/2,HEIGHT/2])
+    go_rct.move_ip((200,HEIGHT/2))
+    screen.blit(go_img,go_rct)
+
+    pg.display.update()
     time.sleep(5)
+    return
 
 
 def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
@@ -87,6 +97,8 @@ def get_kk_img(sum_mv:tuple[int,int])-> pg.Surface:
     kk_img = pg.transform.flip(kk_img, tmp_angle[1], tmp_angle[2])
     return kk_img
 
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     tmr = 0
@@ -111,8 +123,9 @@ def main():
 
         bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
 
-        if kk_rct.colliderect(bb_rct):
-          gameover(screen)  # ゲームオーバー
+        # if kk_rct.colliderect(bb_rct):
+        gameover(screen)  # ゲームオーバー
+        return
         screen.blit(bg_img, [0, 0])
 
         key_lst = pg.key.get_pressed()
