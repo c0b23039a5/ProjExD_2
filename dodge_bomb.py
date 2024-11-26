@@ -44,7 +44,7 @@ def gameover(screen: pg.Surface) ->None:
 
 def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
     """
-    時間と主に爆弾が拡大、加速（１０段階）
+    サイズの異なる爆弾Surfaceを要素としたリストと加速度リスト
     引数:なし
     戻り値:タプル（リスト[爆弾の大きさでサーフェース]、リスト[加速度]）
     """
