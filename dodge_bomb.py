@@ -60,6 +60,11 @@ def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
     return (bb_accs,accs)
 
 def get_kk_img(sum_mv:tuple[int,int])-> pg.Surface:
+    """
+    移動量の合計値タプルに対応する向きの画像Surfaceを返す
+    引数:移動量の合計値タプル
+    戻り値:飛ぶ方向にむかっているこうかとん画像
+    """
     tmp_angle=[0,False,False]
     if sum_mv[0] > 0:
         tmp_angle=[0,1,0]
