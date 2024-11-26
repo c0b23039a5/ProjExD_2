@@ -106,7 +106,8 @@ def calc_orientation(org: pg.Rect,dst:pg.Rect,current_xy:tuple[float,float])->tu
     """
     orgから見て，dstがどこにあるかを計算し，方向ベクトルをタプルで返す
     """
-    pass
+
+    return (current_xy[0],current_xy[1])
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -131,7 +132,6 @@ def main():
                 return
 
         bb_img = bb_imgs[min(tmr // 500, 9)]  # 爆弾用の型のサーフェース
-
         if kk_rct.colliderect(bb_rct):
             gameover(screen)  # ゲームオーバー
             return
@@ -167,6 +167,7 @@ def main():
         else:
             cache_overscreen[1] = False
 
+        vx,vy = calc_orientation(bb_rct,kk_rct,(vx,vy))
         avx = vx * bb_accs[min(tmr // 500, 9)]
         bb_rct.move_ip(avx, vy)
 
