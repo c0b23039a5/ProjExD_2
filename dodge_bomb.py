@@ -49,6 +49,7 @@ def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
     for r in range(1,11):
         bb_img = pg.Surface((20*r,20*r))
         pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+        bb_img.set_colorkey((0, 0, 0))
         bb_accs+=[bb_img]
 
     return (bb_accs,accs)
@@ -59,7 +60,6 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bb_imgs,bb_accs=init_bb_imgs()
     bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
-    bb_img.set_colorkey((0, 0, 0))
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bg_img = pg.image.load("fig/pg_bg.jpg")
@@ -75,6 +75,9 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
+
+        bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
+
         if kk_rct.colliderect(bb_rct):
           gameover(screen)  # ゲームオーバー
         screen.blit(bg_img, [0, 0])
