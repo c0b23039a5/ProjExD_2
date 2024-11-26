@@ -44,15 +44,22 @@ def gameover(screen: pg.Surface) ->None:
 
 def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
     accs = [a for a in range(1,11)]
+    bb_accs=[]
 
-    return (accs,accs)
+    for r in range(1,11):
+        bb_img = pg.Surface((20*r,20*r))
+        pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+        bb_accs+=[bb_img]
+
+    return (bb_accs,accs)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
+    tmr = 0
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    bb_img = pg.Surface((20, 20))  # 爆弾用の型のサーフェース
+    bb_imgs,bb_accs=init_bb_imgs()
+    bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
     bb_img.set_colorkey((0, 0, 0))
-    pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)  # 爆弾円を描く
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     bg_img = pg.image.load("fig/pg_bg.jpg")
@@ -61,7 +68,8 @@ def main():
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
     clock = pg.time.Clock()
-    tmr = 0
+
+    cache_overscreen=[False,False]
 
     while True:
         for event in pg.event.get():
@@ -85,21 +93,21 @@ def main():
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
         screen.blit(kk_img, kk_rct)
 
-        bb_imgs,bb_accs=init_bb_imgs()
-        avx = vx*bb_accs[min(tmr//500,9)]
-        bb_img=bb_imgs[min(tmr//500,9)]
-
-
-        for r in range(1,11):
-            bb_img = pg.Surface((20*r,20*r))
-            pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
 
         yoko,tate = check_bound(bb_rct)
-        if not yoko:
-            avx *= -1
-        if not tate:
+        if not yoko and not cache_overscreen[0]:
+            vx *= -1
+            cache_overscreen[0]=True
+        else:
+            cache_overscreen[0]=False
+        if not tate and not cache_overscreen[1]:
             vy *= -1
+            cache_overscreen[1]=True
+        else:
+            cache_overscreen[1]=False
 
+
+        avx = vx*bb_accs[min(tmr//500,9)]
         bb_rct.move_ip(avx, vy)
 
 
