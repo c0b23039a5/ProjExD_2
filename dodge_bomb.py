@@ -123,9 +123,9 @@ def main():
 
         bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
 
-        # if kk_rct.colliderect(bb_rct):
-        gameover(screen)  # ゲームオーバー
-        return
+        if kk_rct.colliderect(bb_rct):
+          gameover(screen)  # ゲームオーバー
+          return
         screen.blit(bg_img, [0, 0])
 
         key_lst = pg.key.get_pressed()
