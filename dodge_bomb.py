@@ -99,6 +99,12 @@ def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
     return kk_img
 
 
+def calc_orientation(org: pg.Rect,dst:pg.Rect,current_xy:tuple[float,float])->tuple[float,float]:
+    """
+    orgから見て，dstがどこにあるかを計算し，方向ベクトルをタプルで返す
+    """
+    pass
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     tmr = 0
