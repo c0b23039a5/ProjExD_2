@@ -44,11 +44,8 @@ def gameover(screen: pg.Surface) ->None:
 
 def init_bb_imgs() -> tuple[list[pg.Surface],list[int]]:
     accs = [a for a in range(1,11)]
-    for r in range(1,11):
-        bb_img = pg.Surface((20*r,20*r))
-        pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
 
-    return (,accs)
+    return (accs,accs)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -93,12 +90,13 @@ def main():
         bb_img=bb_imgs[min(tmr//500,9)]
 
 
-
-
+        for r in range(1,11):
+            bb_img = pg.Surface((20*r,20*r))
+            pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
 
         yoko,tate = check_bound(bb_rct)
         if not yoko:
-            vx *= -1
+            avx *= -1
         if not tate:
             vy *= -1
 
