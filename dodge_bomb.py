@@ -31,7 +31,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 
 def gameover(screen: pg.Surface) ->None:
     bg_img = pg.Surface((WIDTH, HEIGHT))
-    pg.draw.rect(bg_img,0,WIDTH)
+    pg.draw.rect(bg_img,0,WIDTH, HEIGHT)
     bg_rct = bg_img.get_rect()
     go_img = pg.image.load("fig/8.png")
     go_rct = go_img.get_rect()
@@ -83,8 +83,8 @@ def main():
 
         bb_img=bb_imgs[min(tmr//500,9)]  # 爆弾用の型のサーフェース
 
-        if kk_rct.colliderect(bb_rct):
-          gameover(screen)  # ゲームオーバー
+        # if kk_rct.colliderect(bb_rct):
+        gameover(screen)  # ゲームオーバー
         screen.blit(bg_img, [0, 0])
 
         key_lst = pg.key.get_pressed()
